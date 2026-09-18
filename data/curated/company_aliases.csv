@@ -1,0 +1,66 @@
+alias_name,canonical_name,entity_key,source_url
+Facebook,Meta Platforms,,https://about.fb.com/news/2021/10/facebook-company-is-now-meta/
+Facebook Inc.,Meta Platforms,,https://about.fb.com/news/2021/10/facebook-company-is-now-meta/
+Google,Alphabet Inc. (Class A),,https://abc.xyz/investor/news/releases/2015/1002/
+Google Inc.,Alphabet Inc. (Class A),,https://abc.xyz/investor/news/releases/2015/1002/
+Anthem,Elevance Health,,https://www.elevancehealth.com/newsroom/anthem-inc-is-now-elevance-health
+WellPoint,Elevance Health,,https://www.elevancehealth.com/newsroom/anthem-inc-is-now-elevance-health
+Priceline,Booking Holdings,,https://ir.bookingholdings.com/news-releases/news-release-details/priceline-group-changes-name-booking-holdings-inc
+The Priceline Group,Booking Holdings,,https://ir.bookingholdings.com/news-releases/news-release-details/priceline-group-changes-name-booking-holdings-inc
+Michael Kors,Capri Holdings,,https://www.capriholdings.com/
+CenturyLink,Lumen Technologies,,https://ir.lumen.com/news/news-details/2020/CenturyLink-Rebrands-as-Lumen-Technologies/default.aspx
+L Brands,Bath & Body Works,,https://www.sec.gov/Archives/edgar/data/701985/000070198521000148/0000701985-21-000148-index.htm
+Limited Brands,Bath & Body Works,,https://www.sec.gov/Archives/edgar/data/701985/000070198521000148/0000701985-21-000148-index.htm
+Alliance Data Systems,Bread Financial,,https://investor.breadfinancial.com/
+Cabot Oil & Gas,Coterra Energy,,https://www.coterra.com/
+DowDuPont,DuPont de Nemours,,https://www.dupont.com/news/dowdupont-becomes-dupont.html
+Symantec,Gen Digital,,https://investor.gendigital.com/
+NortonLifeLock,Gen Digital,,https://investor.gendigital.com/
+Willis Towers Watson,WTW,,https://www.wtwco.com/
+Tesoro,Andeavor,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000050104
+Harris Corporation,L3Harris Technologies,,https://www.l3harris.com/
+Ingersoll-Rand,Trane Technologies,,https://www.tranetechnologies.com/
+Ingersoll Rand plc,Trane Technologies,,https://www.tranetechnologies.com/
+CBS Corporation,Paramount Global,,https://ir.paramount.com/
+ViacomCBS,Paramount Global,,https://ir.paramount.com/
+HCP Inc.,Healthpeak Properties,,https://ir.healthpeak.com/
+HCP,Healthpeak Properties,,https://ir.healthpeak.com/
+Fleetcor,Corpay,,https://investor.corpay.com/
+FleetCor Technologies,Corpay,,https://investor.corpay.com/
+PerkinElmer,Revvity,,https://ir.revvity.com/
+AmerisourceBergen,Cencora,,https://investor.cencora.com/
+HollyFrontier,HF Sinclair,,https://www.hfsinclair.com/
+Discovery Inc.,Warner Bros. Discovery,,https://ir.wbd.com/
+Discovery Communications,Warner Bros. Discovery,,https://ir.wbd.com/
+Fortune Brands Home & Security,Fortune Brands Innovations,,https://ir.fbin.com/
+Everest Re,Everest Group,,https://www.everestglobal.com/
+Baker Hughes a GE company,Baker Hughes,,https://investors.bakerhughes.com/
+Wyndham Worldwide,Travel + Leisure Co.,,https://investor.travelandleisureco.com/
+Wyndham Destinations,Travel + Leisure Co.,,https://investor.travelandleisureco.com/
+Alcoa Corp,"Alcoa Corporation, 2016 spin-off",,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001675149
+Alcoa Corporation,"Alcoa Corporation, 2016 spin-off",,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001675149
+Alcoa Inc.,Arconic,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000004281
+Alcoa,Arconic,,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000004281
+AT&T Corporation,"AT&T Corp. (acquired by SBC, 2005)",att-corp-1885,https://en.wikipedia.org/wiki/AT%26T_Corporation
+AT&T Corp.,"AT&T Corp. (acquired by SBC, 2005)",att-corp-1885,https://en.wikipedia.org/wiki/AT%26T_Corporation
+AT&T,AT&T Inc.,att-inc-sbc,https://en.wikipedia.org/wiki/AT%26T
+AT&T Inc.,AT&T Inc.,att-inc-sbc,https://en.wikipedia.org/wiki/AT%26T
+SBC Communications,AT&T Inc.,att-inc-sbc,https://en.wikipedia.org/wiki/AT%26T
+The Chubb Corporation,"The Chubb Corporation (acquired by ACE, 2016)",chubb-corp-nj,https://en.wikipedia.org/wiki/Chubb_Corporation
+Chubb Corp.,"The Chubb Corporation (acquired by ACE, 2016)",chubb-corp-nj,https://en.wikipedia.org/wiki/Chubb_Corporation
+Chubb Limited,Chubb Limited,chubb-ltd-ace,https://en.wikipedia.org/wiki/Chubb_Limited
+ACE Limited,Chubb Limited,chubb-ltd-ace,https://en.wikipedia.org/wiki/Chubb_Limited
+Broadcom Corporation,"Broadcom Corporation (acquired by Avago, 2016)",broadcom-corp-brcm,https://en.wikipedia.org/wiki/Broadcom_Corporation
+Broadcom Corp.,"Broadcom Corporation (acquired by Avago, 2016)",broadcom-corp-brcm,https://en.wikipedia.org/wiki/Broadcom_Corporation
+Broadcom Inc.,Broadcom Inc.,broadcom-inc-avago,https://en.wikipedia.org/wiki/Broadcom
+Broadcom Limited,Broadcom Inc.,broadcom-inc-avago,https://en.wikipedia.org/wiki/Broadcom
+Broadcom,Broadcom Inc.,broadcom-inc-avago,https://en.wikipedia.org/wiki/Broadcom
+Avago Technologies,Broadcom Inc.,broadcom-inc-avago,https://en.wikipedia.org/wiki/Broadcom
+Trane Inc.,"Trane Inc. (acquired by Ingersoll Rand, 2008)",trane-inc-2008,https://en.wikipedia.org/wiki/Trane
+Trane Technologies,Trane Technologies,trane-technologies-ir,https://www.tranetechnologies.com/
+Trane Technologies plc,Trane Technologies,trane-technologies-ir,https://www.tranetechnologies.com/
+Ingersoll Rand,Trane Technologies,trane-technologies-ir,https://www.tranetechnologies.com/
+Ingersoll-Rand,Trane Technologies,trane-technologies-ir,https://www.tranetechnologies.com/
+Ingersoll-Rand plc,Trane Technologies,trane-technologies-ir,https://www.tranetechnologies.com/
+Ingersoll Rand plc,Trane Technologies,trane-technologies-ir,https://www.tranetechnologies.com/
+Ingersoll Rand Inc.,Ingersoll Rand Inc. (formerly Gardner Denver),ingersoll-rand-inc-gdi,https://www.irco.com/

@@ -1,0 +1,43 @@
+old_ticker,new_ticker,effective_date,company_name,source_url
+FB,META,2022-06-09,Meta Platforms,https://investor.atmeta.com/investor-news/press-release-details/2022/Meta-to-Begin-Trading-Under-META-Ticker-Symbol/default.aspx
+ANTM,ELV,2022-06-28,Elevance Health,https://www.elevancehealth.com/newsroom/anthem-inc-is-now-elevance-health
+WLTW,WTW,2022-01-05,Willis Towers Watson,https://www.wtwco.com/en-us/news/2021/12/wtw-announces-new-ticker-symbol
+LB,BBWI,2021-08-03,Bath & Body Works,https://www.sec.gov/Archives/edgar/data/701985/000070198521000148/0000701985-21-000148-index.htm
+CTL,LUMN,2021-01-15,Lumen Technologies,https://ir.lumen.com/news/news-details/2020/CenturyLink-Rebrands-as-Lumen-Technologies/default.aspx
+ADS,BFH,2022-03-23,Bread Financial,https://investor.breadfinancial.com/news/news-details/2022/Alliance-Data-Systems-Rebrands-as-Bread-Financial/default.aspx
+COG,CTRA,2021-10-01,Coterra Energy,https://www.coterra.com/news-releases/coterra-energy-inc-announces-completion-of-merger
+DWDP,DD,2019-06-03,DuPont de Nemours,https://www.dupont.com/news/dowdupont-becomes-dupont.html
+KORS,CPRI,2019-01-02,Capri Holdings,https://www.capriholdings.com/news/news-details/2019/Michael-Kors-Holdings-Limited-Changes-Name-To-Capri-Holdings-Limited/default.aspx
+PCLN,BKNG,2018-02-27,Booking Holdings,https://ir.bookingholdings.com/news-releases/news-release-details/priceline-group-changes-name-booking-holdings-inc
+TSO,ANDV,2017-08-01,Andeavor,https://www.sec.gov/Archives/edgar/data/50104/000005010417000097/0000050104-17-000097-index.htm
+HRS,LHX,2019-07-01,L3Harris Technologies,https://www.l3harris.com/newsroom/press-release/2019/06/l3-harris-technologies-completes-merger
+IR,TT,2020-03-02,Trane Technologies,https://www.tranetechnologies.com/en/index/news/2020/02/ingersoll-rand-becomes-trane-technologies.html
+CBS,VIAC,2019-12-05,Paramount Global,https://ir.paramount.com/news-releases/news-release-details/viacom-and-cbs-complete-merger
+VIAC,PARA,2022-02-16,Paramount Global,https://ir.paramount.com/news-releases/news-release-details/viacomcbs-becomes-paramount
+SYMC,NLOK,2019-11-05,Gen Digital,https://investor.gendigital.com/news/news-details/2019/Symantec-Corporation-Becomes-NortonLifeLock-Inc/default.aspx
+NLOK,GEN,2022-11-08,Gen Digital,https://investor.gendigital.com/news/news-details/2022/NortonLifeLock-Becomes-Gen/default.aspx
+HCP,PEAK,2019-11-05,Healthpeak Properties,https://ir.healthpeak.com/news/press-releases/2019/HCP-Becomes-Healthpeak-Properties/default.aspx
+PEAK,DOC,2024-03-04,Healthpeak Properties,https://ir.healthpeak.com/news/press-releases/2024/Healthpeak-Properties-Completes-Merger-with-Physicians-Realty-Trust/default.aspx
+FLT,CPAY,2024-03-25,Corpay,https://investor.corpay.com/news/press-releases/2024/FLEETCOR-Becomes-Corpay/default.aspx
+PKI,RVTY,2023-05-16,Revvity,https://ir.revvity.com/news-releases/news-release-details/perkinelmer-becomes-revvity
+ABC,COR,2023-08-30,Cencora,https://investor.cencora.com/news/press-releases/2023/AmerisourceBergen-Is-Now-Cencora/default.aspx
+FISV,FI,2023-05-31,Fiserv,https://investors.fiserv.com/news-releases/news-release-details/fiserv-change-ticker-symbol-fi
+HFC,DINO,2022-03-14,HF Sinclair,https://www.hfsinclair.com/news/hf-sinclair-corporation-completes-transactions
+DISCA,WBD,2022-04-11,Warner Bros. Discovery,https://ir.wbd.com/news/news-details/2022/Discovery-Inc-and-WarnerMedia-Complete-Transaction/default.aspx
+FBHS,FBIN,2022-12-15,Fortune Brands Innovations,https://ir.fbin.com/news-releases/news-release-details/fortune-brands-home-security-becomes-fortune-brands-innovations
+BLL,BALL,2022-06-01,Ball Corporation,https://www.ball.com/newswire/article/ball-corporation-changes-ticker-symbol-to-ball
+RE,EG,2023-05-08,Everest Group,https://www.everestglobal.com/press-releases/everest-re-group-ltd-changes-name-to-everest-group-ltd
+BHGE,BKR,2019-10-18,Baker Hughes,https://investors.bakerhughes.com/news-releases/news-release-details/baker-hughes-completes-separation-ge-and-begins-trading-bkr
+WYN,WYND,2018-06-01,Wyndham Destinations,https://www.sec.gov/Archives/edgar/data/1361658/000136165818000032/0001361658-18-000032-index.htm
+WYND,TNL,2021-02-17,Travel + Leisure Co.,https://investor.travelandleisureco.com/news-releases/news-release-details/wyndham-destinations-becomes-travel-leisure-co
+AA,ARNC,2016-11-01,Arconic,https://www.sec.gov/Archives/edgar/data/4281/000000428116000254/0000004281-16-000254-index.htm
+ACE,CB,2016-01-19,Chubb Limited,https://www.spglobal.com/spdji/en/documents/indexnews/announcements/20160113-1029000/1029000_sp500chubbace.pdf
+SBC,T,2005-11-21,AT&T Inc.,https://www.sec.gov/Archives/edgar/data/732717/000073271705000062/0000732717-05-000062-index.htm
+BBT,TFC,2019-12-09,Truist Financial,https://ir.truist.com/news-releases/news-release-details/bbt-and-suntrust-complete-merger-equals-form-truist
+TMK,GL,2019-08-08,Globe Life,https://investors.globelifeinsurance.com/news/press-releases/2019/Torchmark-Corporation-Becomes-Globe-Life-Inc/default.aspx
+UTX,RTX,2020-04-03,Raytheon Technologies,https://www.rtx.com/news/news-center/2020/04/03/raytheon-technologies-completes-merger
+MYL,VTRS,2020-11-16,Viatris,https://investor.viatris.com/news-releases/news-release-details/mylan-and-upjohn-complete-combination-launch-viatris
+PX,LIN,2018-10-31,Linde plc,https://www.linde.com/news-media/press-releases/2018/linde-plc-completes-merger
+EQR,VMRK,2026-07-01,Vivmark Residential,https://en.wikipedia.org/wiki/Historical_components_of_the_S%26P_500
+ACT,AGN,2015-03-17,Allergan plc,https://www.sec.gov/Archives/edgar/data/1578845/000119312515096560/0001193125-15-096560-index.htm
+PARA,PSKY,2025-08-07,Paramount Skydance Corporation,https://en.wikipedia.org/wiki/Paramount_Skydance
