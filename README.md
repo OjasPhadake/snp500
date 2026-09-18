@@ -28,15 +28,19 @@ Documentation of every design decision lives in [`docs/`](docs/):
 
 ## Quick start
 
+All dependencies are installed into a project-local virtual environment (`.venv`, git-ignored) so nothing leaks into the system or user site-packages.
+
 ```bash
-pip install -r requirements.txt
-pip install -e .   # installs the `snp500` command (into ~/.local/bin for user installs; `python -m snp500.cli` works regardless)
+./setup_venv.sh                 # or: make install   (creates .venv and installs requirements + the package)
+source .venv/bin/activate
 snp500 scrape          # fetch sources into data/raw (cached; ~1 req/s, polite user agent)
 snp500 build           # deterministic offline rebuild -> data/build/*.csv + reconciliation report
 snp500 load            # load into SQLite (data/build/snp500.sqlite3) or PostgreSQL via SNP500_DATABASE_URL
 snp500 serve           # dashboard at http://127.0.0.1:8000/  API docs at /docs
 pytest                 # 29 scenario, parser, store and API tests
 ```
+
+Without activating the venv, every command also works as `.venv/bin/python -m snp500.cli <command>` or via `make build|load|serve|test`.
 
 PostgreSQL: `docker compose up -d postgres`, then `export SNP500_DATABASE_URL=postgresql+psycopg2://snp500:snp500@localhost:5432/snp500` before `snp500 load`/`serve`.
 
