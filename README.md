@@ -30,7 +30,7 @@ Documentation of every design decision lives in [`docs/`](docs/):
 
 ```bash
 pip install -r requirements.txt
-pip install -e .
+pip install -e .   # installs the `snp500` command (into ~/.local/bin for user installs; `python -m snp500.cli` works regardless)
 snp500 scrape          # fetch sources into data/raw (cached; ~1 req/s, polite user agent)
 snp500 build           # deterministic offline rebuild -> data/build/*.csv + reconciliation report
 snp500 load            # load into SQLite (data/build/snp500.sqlite3) or PostgreSQL via SNP500_DATABASE_URL
