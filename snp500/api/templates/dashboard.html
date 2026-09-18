@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S&amp;P 500 Membership Explorer</title>
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+<style>
+:root { color-scheme: light; --surface: #fcfcfb; --surface-2: #f3f2ef; --text: #0b0b0b; --text-2: #52514e; --muted: #8a8983; --line: #e2e1dc;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#4a3aa7; --s8:#e34948; --seq:#2a78d6; --grid:#e8e7e3; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; --surface:#1a1a19; --surface-2:#242422; --text:#fff; --text-2:#c3c2b7; --muted:#8f8e86; --line:#33332f;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767; --seq:#3987e5; --grid:#2c2c29; } }
+:root[data-theme="dark"] { color-scheme: dark; --surface:#1a1a19; --surface-2:#242422; --text:#fff; --text-2:#c3c2b7; --muted:#8f8e86; --line:#33332f;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767; --seq:#3987e5; --grid:#2c2c29; }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--surface); color:var(--text); font: 15px/1.5 -apple-system, "Segoe UI", Inter, Roboto, sans-serif; }
+header { padding: 20px 16px 8px; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; } h2 { font-size: 16px; margin: 24px 0 8px; }
+.sub { color: var(--text-2); font-size: 14px; }
+main { max-width: 1200px; margin: 0 auto; padding: 0 16px 48px; }
+.controls { display:flex; flex-wrap:wrap; gap:12px; align-items:center; padding:12px 0; border-bottom:1px solid var(--line); }
+label { font-size: 13px; color: var(--text-2); }
+input, select, button { font: inherit; padding: 6px 10px; border:1px solid var(--line); border-radius:6px; background:var(--surface-2); color:var(--text); }
+button { cursor:pointer; }
+.tiles { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:12px; margin:16px 0; }
+.tile { background:var(--surface-2); border-radius:10px; padding:12px 14px; }
+.tile .v { font-size: 26px; font-weight: 600; letter-spacing:-0.01em; } .tile .l { font-size:12px; color:var(--text-2); }
+.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.card { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 12px; min-width:0; }
+.card h3 { font-size:14px; margin:4px 0 2px; } .card p { margin:0 0 6px; font-size:12px; color:var(--text-2); }
+.chart { width:100%; height:320px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; } th, td { text-align:left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--text-2); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+.tablewrap { max-height: 420px; overflow: auto; border:1px solid var(--line); border-radius:8px; }
+.pill { display:inline-block; padding:1px 8px; border-radius: 999px; font-size:12px; background:var(--surface-2); color:var(--text-2); }
+.warn { color: var(--text-2); font-size: 12px; }
+a { color: var(--s1); }
+@media (max-width: 600px) { .chart { height: 260px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>S&amp;P 500 Membership Explorer</h1>
+  <div class="sub">Point-in-time, event-sourced reconstruction of index membership. Every number is derived from dated ADD/REMOVE events with cited sources. <a href="/docs">API docs</a> · <a href="/quality">data quality</a></div>
+</header>
+<main>
+  <div class="controls">
+    <label>As-of date <input type="date" id="asof" value="2015-12-31" min="2001-01-01"></label>
+    <label>Company lookup <input type="text" id="lookup" placeholder="ticker, name or id" size="18"></label>
+    <button id="go">Show</button>
+    <label><input type="checkbox" id="unsupp"> include unsupported intervals</label>
+    <span class="warn" id="status"></span>
+  </div>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="grid">
+    <div class="card"><h3>Members over time</h3><p>Companies in the index at each year-end. Dual-class listings count once.</p><div class="chart" id="members"></div></div>
+    <div class="card"><h3>Additions and removals by year</h3><p>Event counts from the reconstructed log.</p><div class="chart" id="turnover"></div></div>
+    <div class="card"><h3>Exit reasons by year</h3><p>Classified from the cited reason text; "other_unknown" is never guessed.</p><div class="chart" id="reasons"></div></div>
+    <div class="card"><h3>Sector composition on the as-of date</h3><p>Uses the GICS sector observed nearest that date (dated page snapshots), not today's.</p><div class="chart" id="sectors"></div></div>
+    <div class="card"><h3>Completed membership durations</h3><p>Intervals with known entry and exit dates, in 5-year bins.</p><div class="chart" id="duration"></div></div>
+    <div class="card"><h3>Survival of entrants (Kaplan-Meier)</h3><p>Companies that entered 2001 onward; still-members are censored.</p><div class="chart" id="survival"></div></div>
+  </div>
+
+  <h2>Constituents on <span id="asofLabel"></span> <span class="pill" id="count"></span></h2>
+  <div class="tablewrap"><table id="cons"><thead><tr><th>Ticker</th><th>Company</th><th>Sector (as observed)</th><th>Member since</th><th>Until</th><th>Flags</th></tr></thead><tbody></tbody></table></div>
+
+  <h2>Company timeline <span class="pill" id="companyName"></span></h2>
+  <div class="card"><div class="chart" id="gantt" style="height:220px"></div></div>
+  <div class="tablewrap" style="margin-top:8px"><table id="events"><thead><tr><th>Date</th><th>Action</th><th>Ticker</th><th>Reason</th><th>Category</th><th>Source</th><th>Conf.</th></tr></thead><tbody></tbody></table></div>
+
+  <h2>Cemetery: most recent exits <span class="pill" id="cemCount"></span></h2>
+  <div class="tablewrap"><table id="cem"><thead><tr><th>Exit</th><th>Ticker</th><th>Company</th><th>Entered</th><th>Years</th><th>Reason</th></tr></thead><tbody></tbody></table></div>
+</main>
+<script>
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const S = () => ({ s:[css('--s1'),css('--s2'),css('--s3'),css('--s4'),css('--s5'),css('--s6'),css('--s7'),css('--s8')], text:css('--text'), text2:css('--text-2'), grid:css('--grid'), surface:css('--surface') });
+function layout(extra){ const c=S(); return Object.assign({ paper_bgcolor:c.surface, plot_bgcolor:c.surface, font:{color:c.text2, size:12}, margin:{l:44,r:12,t:8,b:36}, xaxis:{gridcolor:c.grid, zeroline:false, linecolor:c.grid}, yaxis:{gridcolor:c.grid, zeroline:false, linecolor:c.grid, rangemode:'tozero'}, legend:{orientation:'h', y:-0.22}, hovermode:'x unified', bargap:0.35 }, extra||{}); }
+const cfg = {displayModeBar:false, responsive:true};
+const j = (u) => fetch(u).then(r=>r.json());
+const esc = s => String(s ?? '').replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const $ = id => document.getElementById(id);
+
+async function loadStatic(){
+  const c=S();
+  const t = (await j('/analytics/turnover?start_year=2001')).turnover;
+  Plotly.newPlot('members', [{x:t.map(r=>r.year), y:t.map(r=>r.members_at_year_end), type:'scatter', mode:'lines', line:{color:c.s[0], width:2}, name:'members'}], layout({yaxis:{range:[480,520], gridcolor:c.grid}}), cfg);
+  Plotly.newPlot('turnover', [{x:t.map(r=>r.year), y:t.map(r=>r.additions), type:'bar', name:'additions', marker:{color:c.s[0]}}, {x:t.map(r=>r.year), y:t.map(r=>r.removals), type:'bar', name:'removals', marker:{color:c.s[1]}}], layout({barmode:'group'}), cfg);
+  const er = (await j('/analytics/exit-reasons?start_year=2001')).exit_reasons;
+  const cats = ['acquisition','merger','market_cap_eligibility','index_rebalancing_reclassification','spinoff','bankruptcy','going_private','other_unknown'];
+  const others = new Set(); er.forEach(r=>Object.keys(r).forEach(k=>{ if(k!=='year' && !cats.includes(k)) others.add(k); }));
+  const tr = cats.map((k,i)=>({x:er.map(r=>r.year), y:er.map(r=>(r[k]||0) + (k==='other_unknown' ? [...others].reduce((a,o)=>a+(r[o]||0),0):0)), type:'bar', name:k.replace(/_/g,' '), marker:{color:c.s[i]}}));
+  Plotly.newPlot('reasons', tr, layout({barmode:'stack', bargap:0.3}), cfg);
+  const d = await j('/analytics/duration');
+  const bins = Object.entries(d.histogram_completed_5y_bins);
+  Plotly.newPlot('duration', [{x:bins.map(b=>b[0]), y:bins.map(b=>b[1]), type:'bar', marker:{color:c.s[0]}, name:'completed memberships'}], layout({showlegend:false}), cfg);
+  const sv = (await j('/analytics/survival?cohort_start=2001-01-01')).curve;
+  Plotly.newPlot('survival', [{x:sv.map(p=>p.years), y:sv.map(p=>p.survival), type:'scatter', mode:'lines', line:{shape:'hv', color:c.s[0], width:2}, name:'still in index'}], layout({yaxis:{range:[0,1.02], gridcolor:c.grid, tickformat:'.0%'}, xaxis:{title:{text:'years since entry'}, gridcolor:c.grid}}), cfg);
+  $('tiles').innerHTML = [['Completed memberships', d.n_completed],['Ongoing', d.n_ongoing],['Median completed (yrs)', d.median_completed_years],['Mean completed (yrs)', d.mean_completed_years],['Left-censored', d.n_left_censored]].map(([l,v])=>`<div class="tile"><div class="v">${esc(v)}</div><div class="l">${l}</div></div>`).join('');
+  const cem = (await j('/cemetery?limit=300')).companies;
+  $('cemCount').textContent = cem.length + ' shown';
+  $('cem').tBodies[0].innerHTML = cem.map(r=>`<tr><td>${r.exit_date}</td><td>${esc(r.exit_ticker)}</td><td>${esc(r.company_name)}</td><td>${r.entry_date||'≤1996'}</td><td>${r.years_in_index}</td><td>${esc(r.exit_reason_category||'')}</td></tr>`).join('');
+}
+
+async function loadAsOf(){
+  const c=S(); const d=$('asof').value; $('asofLabel').textContent=d; $('status').textContent='loading…';
+  const r = await j(`/constituents?date=${d}&include_unsupported=${$('unsupp').checked}`);
+  $('count').textContent = r.count + ' companies';
+  $('cons').tBodies[0].innerHTML = r.constituents.map(x=>`<tr><td>${esc(x.tickers.join(', '))}</td><td>${esc(x.company_name)}</td><td>${esc(x.gics_sector||'—')}${x.sector_as_of?` <span class="warn">(${x.sector_as_of})</span>`:''}</td><td>${x.entry_date||'≤1996'}</td><td>${x.exit_date||'—'}</td><td>${x.left_censored?'<span class="pill">entry unknown</span>':''}${x.supported?'':'<span class="pill">unsupported</span>'}</td></tr>`).join('');
+  const sec = (await j(`/analytics/sectors?date=${d}`)).sectors;
+  Plotly.newPlot('sectors', [{y:sec.map(s=>s.gics_sector), x:sec.map(s=>s.count), type:'bar', orientation:'h', marker:{color:c.s[0]}, name:'companies', text:sec.map(s=>s.count), textposition:'outside', cliponaxis:false}], layout({margin:{l:170,r:30,t:8,b:36}, showlegend:false, yaxis:{autorange:'reversed', gridcolor:c.grid}}), cfg);
+  $('status').textContent='';
+}
+
+async function loadCompany(){
+  const qv = $('lookup').value.trim(); if(!qv) return;
+  const c=S();
+  const res = await fetch(`/companies/${encodeURIComponent(qv)}`); if(!res.ok){ $('companyName').textContent='not found'; return; }
+  const comp = (await res.json()).companies[0];
+  $('companyName').textContent = `${comp.canonical_name} (${comp.company_id})`;
+  const today = new Date().toISOString().slice(0,10);
+  const bars = comp.memberships.map((m,i)=>({x:[m.entry_date||'1996-01-02', m.exit_date||today], y:['membership','membership'], mode:'lines', line:{color:c.s[0], width:14}, name: m.supported?'in index':'unsupported', opacity:m.supported?1:0.4, hovertemplate:`${m.entry_date||'≤1996 (unknown)'} → ${m.exit_date||'present'}<extra></extra>`}));
+  const tk = comp.tickers.map((t,i)=>({x:[t.valid_from||'1996-01-02', t.valid_to||today], y:['ticker','ticker'], mode:'lines+text', text:[t.ticker,''], textposition:'top right', textfont:{color:c.text2}, line:{color:c.s[(i+1)%8], width:8}, name:t.ticker, hovertemplate:`${t.ticker}: ${t.valid_from||'?'} → ${t.valid_to||'present'}<extra></extra>`}));
+  Plotly.newPlot('gantt', [...bars, ...tk], layout({showlegend:false, hovermode:'closest', margin:{l:80,r:12,t:8,b:36}, yaxis:{gridcolor:c.grid}}), cfg);
+  $('events').tBodies[0].innerHTML = comp.events.map(e=>`<tr><td>${e.effective_date}</td><td>${e.action}</td><td>${esc(e.ticker_at_event)}</td><td>${esc(e.reason||'')}</td><td>${esc(e.reason_category)}</td><td><a href="${esc(e.source_url)}" target="_blank" rel="noopener">${esc(e.source_type)}</a>${e.corroborating_sources.length?` +${e.corroborating_sources.length}`:''}</td><td>${e.confidence}</td></tr>`).join('');
+}
+$('go').onclick = () => { loadAsOf(); loadCompany(); };
+$('lookup').addEventListener('keydown', e => { if (e.key === 'Enter') loadCompany(); });
+$('asof').addEventListener('change', loadAsOf);
+$('unsupp').addEventListener('change', loadAsOf);
+loadStatic(); loadAsOf(); $('lookup').value='AAPL'; loadCompany();
+</script>
+</body>
+</html>

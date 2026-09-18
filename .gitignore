@@ -10,3 +10,4 @@ dist/
 *.db
 data/build/*.db
 .ipynb_checkpoints/
+data/build/*.log

@@ -107,7 +107,7 @@ def _header_index(header: list[str]) -> dict[str, int]:
             idx.setdefault("name", i)
         elif "sub-industry" in hl or "sub industry" in hl or "subindustry" in hl:
             idx.setdefault("sub_industry", i)
-        elif "sector" in hl:
+        elif "sector" in hl or hl == "industry":  # 2007-2008 revisions label the GICS sector "Industry"
             idx.setdefault("sector", i)
         elif "headquarters" in hl or "address" in hl or "location" in hl:
             idx.setdefault("hq", i)

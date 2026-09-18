@@ -358,7 +358,15 @@ class CompanyRegistry:
                     old.add_evidence(ticker, on, kind)
                     self.log.append({"op": "ticker_change", "company_id": old.company_id, "old": counterpart_ticker, "new": ticker, "date": on.isoformat(), "rule": "same_row_reason"})
                     return old, True
-        # Rule 1/5 (curated alias resolves inside by_key) and Rule 4 (continuity)
+        # Rule 1: a curated alias is authoritative for identity (it exists precisely
+        # because ticker/name heuristics get this company wrong).
+        if name and self.curated.canonical_for(name) is not None:
+            c = self.by_key(name) or self.create(name, ticker, on, source, kind)
+            c.names.setdefault(name, on)
+            c.add_evidence(ticker, on, kind)
+            self.log.append({"op": "resolve", "company_id": c.company_id, "ticker": ticker, "name": name, "date": on.isoformat(), "kind": kind, "rule": "curated_alias"})
+            return c, False
+        # Rule 5 (name key) and Rule 4 (continuity)
         c_name = self.by_key(name) if name else None
         c_cont = self.by_ticker_continuity(ticker, on, name, kind)
         chosen: Optional[Company] = None
@@ -384,6 +392,12 @@ class CompanyRegistry:
                     chosen, rule = c_cont, "ticker_continuity_name_reused"
                 elif self._names_compatible(c_cont, name):
                     chosen, rule = c_cont, "ticker_continuity_over_name"
+        if chosen is None and kind == "add" and name:
+            # Re-entry: a company that left the index earlier comes back under the same
+            # ticker and a compatible name ("American Airlines" / "American Airlines Group").
+            cands = [c for c in self.live() if c.has_ticker(ticker) and self._names_compatible(c, name) and c.last_remove() is not None and c.last_remove() < on and not any(d > c.last_remove() for d, a, _ in c.claims if a == "ADD")]
+            if len(cands) == 1:
+                chosen, rule = cands[0], "ticker_reentry_compatible_name"
         if chosen is None and kind == "remove":
             # REMOVE of a ticker with an older evidence trail (gap > CONTINUITY_DAYS) but not removed since
             cands = [c for c in self.live() if c.has_ticker(ticker) and not c.membership_excludes(on, on) and self._names_compatible(c, name)]
@@ -428,6 +442,7 @@ class CompanyRegistry:
         """
         for c in self.live():
             items = []
+            ends_with_change: dict[str, bool] = {}
             for t, ev in c.evidence.items():
                 # Point-in-time-reliable kinds first; the reference back-fills tickers and
                 # old change-table ADD rows are frequently written with today's ticker.
@@ -435,18 +450,22 @@ class CompanyRegistry:
                     ds = [d for d, _, k in ev if k in kinds]
                     if ds:
                         break
-                items.append((min(ds), max(ds), t))
+                hi = max(ds)
+                # last sighting is the remove-half of a ticker change on that very day
+                ends_with_change[t] = any(d == hi and k in ("remove", "curated") for d, _, k in ev)
+                items.append((min(ds), hi, t))
             items.sort()
             spans: list[TickerSpan] = []
-            current_member = c.last_remove() is None or (c.first_add() is not None and c.first_add() > c.last_remove()) or any(d >= today - timedelta(days=400) for ev in c.evidence.values() for d, _, _ in ev)
+            last_r = c.last_remove()
+            current_member = last_r is None or any(d > last_r for d, a, _ in c.claims if a == "ADD") or any(d >= today - timedelta(days=400) for ev in c.evidence.values() for d, _, _ in ev)
             for i, (lo, hi, t) in enumerate(items):
                 lo_eff = None if i == 0 else lo  # earliest ticker: unknown start
                 # A later ticker *replaces* this one only if this one was not seen after
                 # the later one first appeared; otherwise they are concurrent share classes.
-                successors = [n_lo for n_lo, n_hi, n_t in items[i + 1 :] if n_lo > hi]
+                successors = [n_lo for n_lo, n_hi, n_t in items[i + 1 :] if n_lo > hi or (n_lo == hi and ends_with_change[t])]
                 if successors:
                     hi_eff = min(successors) - timedelta(days=1)
-                elif current_member and hi >= today - timedelta(days=400):
+                elif current_member:
                     hi_eff = None
                 else:
                     hi_eff = hi

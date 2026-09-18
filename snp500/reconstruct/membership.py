@@ -143,10 +143,17 @@ def resolve_named(cands: list[Candidate], snapshots: list[SnapshotObservation], 
                     tc = reg.curated.ticker_change_from(c.ticker, on)
                     comp, _ = reg.resolve_named(c.ticker, c.name, on, c.source_type, "remove")
                     c.company_id = comp.company_id
+                    other_line_continues = any(t != c.ticker and any(on <= d <= on + timedelta(days=30) for d, _, k in ev if k in ("add", "current", "snapshot", "curated")) for t, ev in comp.evidence.items())
                     if tc is not None and reg.by_ticker_continuity(tc.new_ticker, on) is comp:
                         c.action = TICKER_CHANGE
                         c.reason_category = ReasonCategory.TICKER_CHANGE
                         c.notes += "; remove-half of curated ticker change"
+                    elif other_line_continues:
+                        # One share-class line retired while the company keeps trading in the
+                        # index under another ticker (DISCK retired when Discovery became WBD).
+                        c.action = TICKER_CHANGE
+                        c.reason_category = ReasonCategory.TICKER_CHANGE
+                        c.notes += "; share-class line retired, company continues under another ticker"
                     else:
                         comp.claims.append((on, REMOVE, c.source_type))
             out.append(c)
@@ -444,7 +451,10 @@ def derive_intervals(events: list[Event], reg: CompanyRegistry, ref_assignment: 
     issues: list[Issue] = []
     kept: list[Event] = []
     for cid, evs in by_company.items():
-        evs.sort(key=lambda e: (e.effective_date, {REMOVE: 0, TICKER_CHANGE: 1, ADD: 2}[e.action]))
+        # Same-date order: ADD, then TICKER_CHANGE, then REMOVE, so a same-day
+        # add+remove yields an explicit zero-length interval (flagged) rather than
+        # a phantom open-ended membership.
+        evs.sort(key=lambda e: (e.effective_date, {ADD: 0, TICKER_CHANGE: 1, REMOVE: 2}[e.action]))
         open_iv: Optional[Interval] = None
         for e in evs:
             if e.action == TICKER_CHANGE:
